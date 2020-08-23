@@ -1,0 +1,8 @@
+{
+	"name": "musicApp",
+	"appName": "musicApp",
+	"applicationID": "app.eeui.musicApp",
+	"bundleIdentifier": "app.eeui.musicApp",
+	"release": "2.3.11",
+	"location": "eeui"
+}
