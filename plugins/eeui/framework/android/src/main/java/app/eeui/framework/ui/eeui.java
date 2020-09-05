@@ -56,6 +56,7 @@ import app.eeui.framework.extend.integration.swipebacklayout.BGAKeyboardUtil;
 import app.eeui.framework.extend.integration.swipebacklayout.BGASwipeBackHelper;
 import app.eeui.framework.extend.module.eeuiAdDialog;
 import app.eeui.framework.extend.module.eeuiAjax;
+import app.eeui.framework.extend.module.scanFile; //扫描本地文件
 import app.eeui.framework.extend.module.eeuiAlertDialog;
 import app.eeui.framework.extend.module.eeuiBase;
 import app.eeui.framework.extend.module.eeuiCommon;
@@ -1500,6 +1501,24 @@ public class eeui {
      */
     public void clearCacheAjax(Context context) {
         new eeuiIhttp.clearCache("ajax").start();
+    }
+
+    public void scanFile(Context context, JSCallback callback) {
+        PermissionUtils.permission(PermissionConstants.STORAGE)
+                .rationale(shouldRequest -> PermissionUtils.showRationaleDialog(context, shouldRequest, "扫描本地"))
+                .callback(new PermissionUtils.FullCallback() {
+                    @Override
+                    public void onGranted(List<String> permissionsGranted) {
+                        scanFile.startScan(callback);
+                    }
+                    @Override
+                    public void onDenied(List<String> permissionsDeniedForever, List<String> permissionsDenied) {
+                        if (!permissionsDeniedForever.isEmpty()) {
+                            PermissionUtils.showOpenAppSettingDialog(context, "扫描本地");
+                        }
+                    }
+                }).request();
+
     }
 
     /**

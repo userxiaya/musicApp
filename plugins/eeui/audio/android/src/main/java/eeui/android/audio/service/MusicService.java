@@ -6,6 +6,7 @@ import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -67,12 +68,18 @@ public class MusicService {
             }
             mPlayer = null;
             mPlayer = new MediaPlayer();
-            if (url.startsWith("file://assets/")) {
+            if(url.startsWith("file:///storage")){
+                String newUrl = url.replace("file://","");
+                Log.i("playerUrl",newUrl);
+                mPlayer.setDataSource(newUrl);
+            }
+            else if (url.startsWith("assets/")) {
                 AssetFileDescriptor assetFile = eeui.getApplication().getAssets().openFd(url.substring(14));
                 mPlayer.setDataSource(assetFile.getFileDescriptor(), assetFile.getStartOffset(), assetFile.getLength());
-            }else{
+            } else{
                 mPlayer.setDataSource(url);
             }
+
             mPlayer.prepare();
         } catch (Exception e) {
             e.printStackTrace();

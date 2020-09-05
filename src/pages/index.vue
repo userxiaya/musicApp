@@ -1,5 +1,6 @@
 <template>
   <div style="align-items: center;justify-content: center">
+    <text>{{currentSong.url}}</text>
     <text class="res">{{currentSongIndex}}</text>
     <text class="button" @click="play(currentSong.url)">播放（{{currentSong.url}}）</text>
     <text class="button" @click="start">恢复播放</text>
@@ -17,6 +18,7 @@ import songList from "../json/songList";
 import { debounce } from "../utils/common.js";
 const navigationBar = app.requireModule("navigationBar");
 const audio = app.requireModule("audio");
+const eeui = app.requireModule("eeui");
 
 export default {
   data() {
@@ -28,16 +30,32 @@ export default {
     };
   },
   mounted() {
-    //   navigationBar.setTitle("音频播放");
+    eeui.scanFile(result => {
+      if (result && result.state === "success") {
+        const list = result.fileList.map(e => {
+          return {
+            title: e.fileName,
+            url: e.path
+          };
+        });
+        this.songList = list
+      }
+      if (result.status === "error") {
+        eeui.alert(
+          {
+            title: "提示!",
+            message: "请确认是否授权获取本地文件"
+          },
+          function() {}
+        );
+      }
+    }); //扫描本地文件
     audio.setCallback(res => {
-      if (res.status == "error"||res.status=="compelete") {
+      if (res.status == "error" || res.status == "compelete") {
         this.nextSong();
       }
       this.res = res;
     });
-    setTimeout(()=>{
-      this.play(this.currentSong.url)
-    },100)
   },
   computed: {
     currentSong() {

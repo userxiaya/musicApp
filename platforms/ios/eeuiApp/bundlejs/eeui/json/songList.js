@@ -3,7 +3,7 @@ export default [
         "title": "青春住了谁",
         "author": "杨丞琳",
         "image": "https://eeui.oss-cn-beijing.aliyuncs.com/editor/resources/qingchunzhuleshui.jpeg",
-        "url": "https://eeui.oss-cn-beijing.aliyuncs.com/editor/resources/qingchunzhuleshui.m4as",
+        "url": "https://eeui.oss-cn-beijing.aliyuncs.com/editor/resources/qingchunzhuleshui.m4a",
         "lyric": [
             {"time": "00:00.000", "text": "作曲 : 苏亦承"},
             {"time": "00:01.000", "text": "作词 : 吴青峰"},

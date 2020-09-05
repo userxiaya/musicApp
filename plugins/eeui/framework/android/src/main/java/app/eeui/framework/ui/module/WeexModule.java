@@ -710,6 +710,11 @@ public class WeexModule extends WXModule {
         myApp().ajax(mWXSDKInstance.getContext(), object, callback);
     }
 
+    @JSMethod
+    public void scanFile(JSCallback callback) {
+        myApp().scanFile(mWXSDKInstance.getContext(), callback);
+    }
+
     /**
      * 取消跨域异步请求
      * @param name

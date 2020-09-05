@@ -102,7 +102,7 @@ __webpack_require__.r(__webpack_exports__);
   "title": "青春住了谁",
   "author": "杨丞琳",
   "image": "https://eeui.oss-cn-beijing.aliyuncs.com/editor/resources/qingchunzhuleshui.jpeg",
-  "url": "https://eeui.oss-cn-beijing.aliyuncs.com/editor/resources/qingchunzhuleshui.m4as",
+  "url": "https://eeui.oss-cn-beijing.aliyuncs.com/editor/resources/qingchunzhuleshui.m4a",
   "lyric": [{
     "time": "00:00.000",
     "text": "作曲 : 苏亦承"
@@ -925,10 +925,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 var navigationBar = app.requireModule("navigationBar");
 var audio = app.requireModule("eeuiAudio");
+var eeui = app.requireModule("eeui");
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -941,7 +943,25 @@ var audio = app.requireModule("eeuiAudio");
   mounted: function mounted() {
     var _this = this;
 
-    //   navigationBar.setTitle("音频播放");
+    eeui.scanFile(function (result) {
+      if (result && result.state === "success") {
+        var list = result.fileList.map(function (e) {
+          return {
+            title: e.fileName,
+            url: e.path
+          };
+        });
+        _this.songList = list;
+      }
+
+      if (result.status === "error") {
+        eeui.alert({
+          title: "提示!",
+          message: "请确认是否授权获取本地文件"
+        }, function () {});
+      }
+    }); //扫描本地文件
+
     audio.setCallback(function (res) {
       if (res.status == "error" || res.status == "compelete") {
         _this.nextSong();
@@ -949,9 +969,6 @@ var audio = app.requireModule("eeuiAudio");
 
       _this.res = res;
     });
-    setTimeout(function () {
-      _this.play(_this.currentSong.url);
-    }, 100);
   },
   computed: {
     currentSong: function currentSong() {
@@ -1066,7 +1083,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       alignItems: "center",
       justifyContent: "center"
     }
-  }, [_c('text', {
+  }, [_c('text', [_vm._v(_vm._s(_vm.currentSong.url))]), _c('text', {
     staticClass: ["res"]
   }, [_vm._v(_vm._s(_vm.currentSongIndex))]), _c('text', {
     staticClass: ["button"],
