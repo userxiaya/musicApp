@@ -701,6 +701,30 @@ public class WeexModule extends WXModule {
     /****************************************************************************************/
 
     /**
+     * 根据url获取file对象
+     * @param callback
+     */
+    @JSMethod
+    public void scanFile(JSCallback callback) {
+        myApp().scanFile(mWXSDKInstance.getContext(), callback);
+    }
+    /****************************************************************************************/
+    /****************************************************************************************/
+
+    /**
+     * 获取图片尺寸
+     * @param url
+     * @param callback
+     */
+    @JSMethod
+    public void getFileByUrl(String url, JSCallback callback) {
+        myApp().getFileByUrl(mWXSDKInstance.getContext(), url, callback);
+    }
+
+    /****************************************************************************************/
+    /****************************************************************************************/
+
+    /**
      * 跨域异步请求
      * @param object
      * @param callback
@@ -710,10 +734,7 @@ public class WeexModule extends WXModule {
         myApp().ajax(mWXSDKInstance.getContext(), object, callback);
     }
 
-    @JSMethod
-    public void scanFile(JSCallback callback) {
-        myApp().scanFile(mWXSDKInstance.getContext(), callback);
-    }
+ 
 
     /**
      * 取消跨域异步请求

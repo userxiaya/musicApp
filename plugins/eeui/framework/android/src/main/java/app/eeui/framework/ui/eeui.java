@@ -1469,6 +1469,43 @@ public class eeui {
     /****************************************************************************************/
 
     /**
+     * 获取图片尺寸
+     * @param context
+     * @param url
+     * @param callback
+     */
+    public void getFileByUrl(Context context, String url, JSCallback callback) {
+        scanFile.getFileByUrl(context, url, callback);
+    }
+
+    /****************************************************************************************/
+    /****************************************************************************************/
+    
+    /**
+     * 打开扫描本地文件
+     * @param callback
+     */
+    public void scanFile(Context context, JSCallback callback) {
+        PermissionUtils.permission(PermissionConstants.STORAGE)
+                .rationale(shouldRequest -> PermissionUtils.showRationaleDialog(context, shouldRequest, "扫描本地"))
+                .callback(new PermissionUtils.FullCallback() {
+                    @Override
+                    public void onGranted(List<String> permissionsGranted) {
+                        scanFile.startScan(callback);
+                    }
+                    @Override
+                    public void onDenied(List<String> permissionsDeniedForever, List<String> permissionsDenied) {
+                        if (!permissionsDeniedForever.isEmpty()) {
+                            PermissionUtils.showOpenAppSettingDialog(context, "扫描本地");
+                        }
+                    }
+                }).request();
+    }
+
+    /****************************************************************************************/
+    /****************************************************************************************/
+
+    /**
      * 跨域异步请求
      * @param object
      * @param callback
@@ -1503,23 +1540,7 @@ public class eeui {
         new eeuiIhttp.clearCache("ajax").start();
     }
 
-    public void scanFile(Context context, JSCallback callback) {
-        PermissionUtils.permission(PermissionConstants.STORAGE)
-                .rationale(shouldRequest -> PermissionUtils.showRationaleDialog(context, shouldRequest, "扫描本地"))
-                .callback(new PermissionUtils.FullCallback() {
-                    @Override
-                    public void onGranted(List<String> permissionsGranted) {
-                        scanFile.startScan(callback);
-                    }
-                    @Override
-                    public void onDenied(List<String> permissionsDeniedForever, List<String> permissionsDenied) {
-                        if (!permissionsDeniedForever.isEmpty()) {
-                            PermissionUtils.showOpenAppSettingDialog(context, "扫描本地");
-                        }
-                    }
-                }).request();
-
-    }
+   
 
     /**
      * 获取图片尺寸

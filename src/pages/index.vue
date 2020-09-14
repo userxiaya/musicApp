@@ -11,23 +11,28 @@
     <text class="button" @click="seek">指定进度</text>
     <text class="button" @click="loop">{{isloop?'取消循环':'循环'}}</text>
     <text class="button" @click="duration">获取时长</text>
+    <descMusic ref="desc" @desc="desc"/>
   </div>
 </template>
 <script>
-import songList from "../json/songList";
 import { debounce } from "../utils/common.js";
+import descMusic from "../components/descMusic"
 const navigationBar = app.requireModule("navigationBar");
 const audio = app.requireModule("audio");
 const eeui = app.requireModule("eeui");
+
 
 export default {
   data() {
     return {
       res: "",
-      songList,
+      songList:[],
       currentSongIndex: 0,
       isloop: false
     };
+  },
+  components:{
+    descMusic
   },
   mounted() {
     eeui.scanFile(result => {
@@ -60,7 +65,7 @@ export default {
   computed: {
     currentSong() {
       const { currentSongIndex, songList } = this;
-      return songList[currentSongIndex];
+      return songList[currentSongIndex]||{};
     }
   },
   beforeDestroy: function() {
@@ -89,12 +94,16 @@ export default {
         this.play(this.currentSong.url);
       }, 0);
     }),
-
     start() {
       audio.start();
     },
-    play(url) {
+    desc(url) {
+      console.log("abababab");
+      
       audio.play(url);
+    },
+    play(url) {
+      this.$refs.desc.sendMessage({url:url})
     },
     pause() {
       audio.pause();

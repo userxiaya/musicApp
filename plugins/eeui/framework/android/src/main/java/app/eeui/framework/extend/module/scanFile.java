@@ -1,8 +1,9 @@
 package app.eeui.framework.extend.module;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Environment;
-import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.taobao.weex.bridge.JSCallback;
@@ -13,6 +14,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import app.eeui.framework.activity.PageActivity;
 
 public class scanFile extends Activity {
     private static ArrayList<Map<String, Object>> scanedFiles = new ArrayList<Map<String, Object>>();
@@ -35,6 +38,25 @@ public class scanFile extends Activity {
             }
         }
         return result; //false
+    }
+    public static void getFileByUrl(Context context, String url, JSCallback call){
+        final File file = new File(url);
+        Map<String, Object> result = new HashMap<>();
+        result.put("state","success");
+        result.put("file",file);
+        call.invoke(result);
+        if (context instanceof PageActivity) {
+            if (TextUtils.isEmpty(((PageActivity) context).identify)) {
+                return;
+            }
+        }
+    }
+    public static Map<String, Object> getFileByUrl2(String url){
+        final File file = new File(url);
+        Map<String, Object> result = new HashMap<>();
+        result.put("state","success");
+        result.put("file",file);
+        return result;
     }
     /*开始扫描*/
     public static void startScan(JSCallback call) {

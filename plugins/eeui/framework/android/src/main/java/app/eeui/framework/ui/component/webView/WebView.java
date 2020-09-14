@@ -1,9 +1,12 @@
 package app.eeui.framework.ui.component.webView;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import androidx.annotation.NonNull;
 
+
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -23,6 +26,7 @@ import app.eeui.framework.extend.module.eeuiJson;
 import app.eeui.framework.extend.module.eeuiParse;
 import app.eeui.framework.extend.module.eeuiScreenUtils;
 import app.eeui.framework.extend.view.ExtendWebView;
+
 
 /**
  * Created by WDM on 2018/4/13.
@@ -111,6 +115,8 @@ public class WebView extends WXVContainer<ViewGroup> {
                 fireEvent(eeuiConstants.Event.RECEIVE_MESSAGE, retData);
             });
         }
+        v_webview.getSettings().setJavaScriptEnabled(true);
+        v_webview.setSaveEnabled(false);
     }
 
     @Override
@@ -127,6 +133,7 @@ public class WebView extends WXVContainer<ViewGroup> {
         switch (key) {
             case "eeui":
                 JSONObject json = eeuiJson.parseObject(eeuiParse.parseStr(val, ""));
+                Log.i("initProperty",eeuiParse.parseStr(val, ""));
                 if (json.size() > 0) {
                     for (Map.Entry<String, Object> entry : json.entrySet()) {
                         initProperty(entry.getKey(), entry.getValue());
@@ -211,6 +218,21 @@ public class WebView extends WXVContainer<ViewGroup> {
         if (v_webview != null) {
             v_webview.loadUrl("javascript:(function(){" + script + "})();");
         }
+    }
+
+    public class JavaScriptInterface {
+        View mContext;
+
+        JavaScriptInterface(View view) {
+            mContext = view;
+        }
+    }
+
+    @SuppressLint("JavascriptInterface")
+    @JSMethod
+
+    public void sendMessage(String url) {
+        v_webview.loadUrl(url);
     }
 
     /**

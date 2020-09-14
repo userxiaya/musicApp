@@ -1,7 +1,10 @@
 package app.eeui.framework.ui.module;
 
 
+import android.content.Context;
+
 import com.alibaba.fastjson.JSONObject;
+import com.taobao.weex.bridge.JSCallback;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -630,6 +633,19 @@ public class WebModule {
      */
     public static void openScaner(ExtendWebView webView, String object, JsCallback callback) {
         myApp().openScaner(webView.getContext(), object, eeui.MCallback(callback));
+    }
+
+    
+    /****************************************************************************************/
+    /****************************************************************************************/
+
+    /**
+     * 获取图片尺寸
+     * @param url
+     * @param callback
+     */
+    public void getFileByUrl(ExtendWebView webView, String url, JSCallback callback) {
+        myApp().getFileByUrl(webView.getContext(),url,callback);
     }
 
     /****************************************************************************************/

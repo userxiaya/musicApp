@@ -1,6 +1,14 @@
 package app.eeui.framework.ui.module;
 
 
+import android.util.Log;
+
+import com.taobao.weex.bridge.JSCallback;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import app.eeui.framework.extend.module.scanFile;
 import app.eeui.framework.extend.view.ExtendWebView;
 import app.eeui.framework.extend.view.webviewBridge.JsCallback;
 import app.eeui.framework.ui.eeui;
@@ -53,6 +61,22 @@ public class WebviewModule {
     public static void setProgressbarVisibility(ExtendWebView webView, boolean var) {
         if (webView != null) {
             ((ExtendWebView) webView).setProgressbarVisibility(var);
+        }
+    }
+
+     /**
+     * 是否显示进度条
+     * @param url
+     * @param callback      *
+     */
+    public static void getFileByUrl(ExtendWebView webView, String url, JsCallback callback) {
+        Log.i("getFileByUrl2","ssq");
+        System.out.println(webView);
+        Map<String, Object> result =  scanFile.getFileByUrl2(url);
+        try {
+            callback.apply(result);
+        } catch (JsCallback.JsCallbackException e) {
+            e.printStackTrace();
         }
     }
 
